@@ -8,10 +8,10 @@ type Postamat struct {
 	gorm.Model
 
 	Number                     int16  `json:"number"`
-	Owner                      string `json: "owner"`
-	OfficeCode                 string `json: "officeCode"`
-	Region                     string `json: "region"`
-	Address                    string `json: "address"`
+	Owner                      string `json:"owner"`
+	OfficeCode                 string `json:"officeCode"`
+	Region                     string `json:"region"`
+	Address                    string `json:"address"`
 	FirmwareStatus             string `json:"firmwareStatus"`
 	ActivationBlocker          string `json:"activationBlocker"`
 	FirmwareVersion            string `json:"firmwareVersion"`

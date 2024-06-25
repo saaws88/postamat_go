@@ -3,29 +3,22 @@ package util
 import (
 	"encoding/csv"
 	"fmt"
-	"log"
-	"os"
+	"io"
 	"strconv"
 
 	"saaws88/model"
 )
 
-func ParseCsv(filepath string) [][]string {
+func ParseCsv(reader io.Reader) ([][]string, error) {
 
-	f, err := os.Open(filepath)
-	if err != nil {
-		log.Fatal("Unable to read input file"+filepath, err)
-	}
-	defer f.Close()
-
-	csvReader := *csv.NewReader(f)
+	csvReader := csv.NewReader(reader)
 	csvReader.Read()
 	records, err := csvReader.ReadAll()
 	if err != nil {
-		log.Fatal("Unable to pars file as CSV for "+filepath, err)
+		return nil, err
 	}
 
-	return records
+	return records, nil
 
 }
 

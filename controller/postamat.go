@@ -8,6 +8,7 @@ import (
 
 	"saaws88/config"
 	"saaws88/model"
+	"saaws88/util"
 )
 
 func GetAll(c *gin.Context) {
@@ -25,4 +26,36 @@ func GetByNumber(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": postamat})
+}
+
+func BatchCreate(c *gin.Context) {
+
+	file, err := c.FormFile("file")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"data": "Can't get file"})
+		return
+	}
+
+	f, err := file.Open()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"data": "Can't read file"})
+		return
+	}
+	defer f.Close()
+
+	sheet, err := util.ParseCsv(f)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"data": "Can't parse csv file"})
+		return
+	}
+
+	count := 0
+	for _, line := range sheet {
+		p := util.BuildFromLine(line)
+		config.DB.Create(&p)
+		count++
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"data": count})
+
 }

@@ -14,6 +14,8 @@ func main() {
 	config.ConnectToDb()
 
 	router.GET("postamat/get", controller.GetAll)
+	router.GET("postamat/get/:number", controller.GetByNumber)
+	router.POST("postamat/batchcreate", controller.BatchCreate)
 
 	router.Run()
 
